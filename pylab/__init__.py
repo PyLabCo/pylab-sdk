@@ -5,7 +5,7 @@ def get_ip():
     """Get public ip from http header"""
     response = requests.get('https://pylab.co/ip')
     if response.status_code != 200:
-        raise RuntimeError()
+        return ''
     return response.text
 
 
@@ -13,7 +13,7 @@ def get_latest_agents(arch=None):
     """Get latest user agent of modern browser"""
     response = requests.get('https://pylab.co/agents')
     if response.status_code != 200:
-        raise RuntimeError()
+        return
     data = response.json()
     if arch:
         if arch in data:
@@ -31,5 +31,5 @@ def wc(content, source=''):
         'source': source
     })
     if response.status_code != 200:
-        raise RuntimeError
-    return
+        return False
+    return True
