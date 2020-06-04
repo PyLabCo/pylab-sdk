@@ -10,11 +10,20 @@ def auth(key):
     @param key: keg api key
     """
     global _auth
-    response = requests.get(f'https://pylab.co/keg/auth/?key={key}')
+    s = requests.Session()
+    retries = Retry(total=5,
+                    backoff_factor=0.1,
+                    status_forcelist=[ 500, 502, 503, 504 ])
+    s.mount('http://', HTTPAdapter(max_retries=retries))
+    s.mount('https://', HTTPAdapter(max_retries=retries))
+    try:
+        response = s.get(f'https://pylab.co/keg/auth/?key={key}')
+    except requests.exceptions.RequestException:
+        raise RuntimeError(r'Can\'t not connect to keg server.')
     if response.status_code != 200:
         raise RuntimeError(r'Can\'t not connect to keg server.')
     _auth = response.json()
-    return
+    return _auth
 
 
 def log(message):

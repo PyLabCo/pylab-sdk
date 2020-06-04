@@ -1,10 +1,18 @@
 import requests
+from urllib3.util.retry import Retry
+from requests.adapters import HTTPAdapter
 
 
 def get_ip():
     """Get public ip from http header"""
+    s = requests.Session()
+    retries = Retry(total=5,
+                    backoff_factor=0.1,
+                    status_forcelist=[ 500, 502, 503, 504 ])
+    s.mount('http://', HTTPAdapter(max_retries=retries))
+    s.mount('https://', HTTPAdapter(max_retries=retries))
     try:
-        response = requests.get('https://pylab.co/ip', max_retries=5)
+        response = s.get('https://pylab.co/ip')
     except requests.exceptions.RequestException:
         return ''
 
@@ -16,8 +24,14 @@ def get_ip():
 
 def get_latest_agents(arch=None):
     """Get latest user agent of modern browser"""
+    s = requests.Session()
+    retries = Retry(total=5,
+                    backoff_factor=0.1,
+                    status_forcelist=[ 500, 502, 503, 504 ])
+    s.mount('http://', HTTPAdapter(max_retries=retries))
+    s.mount('https://', HTTPAdapter(max_retries=retries))
     try:
-        response = requests.get('https://pylab.co/agents', max_retries=5)
+        response = s.get('https://pylab.co/agents')
     except requests.exceptions.RequestException:
         return
 

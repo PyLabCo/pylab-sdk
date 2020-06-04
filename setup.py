@@ -5,7 +5,7 @@ import sys
 from setuptools import setup
 
 
-__version__ = '1.2.0'
+__version__ = '1.2.2'
 __author__ = 'Yeongbin Jo <yeongbin.jo@pylab.co>'
 
 
