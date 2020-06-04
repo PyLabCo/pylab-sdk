@@ -4,8 +4,8 @@ import requests
 def get_ip():
     """Get public ip from http header"""
     try:
-        response = requests.get('https://pylab.co/ip')
-    except requests.exceptions.ConnectionError:
+        response = requests.get('https://pylab.co/ip', max_retries=5)
+    except requests.exceptions.RequestException:
         return ''
 
     if response.status_code != 200:
@@ -17,8 +17,8 @@ def get_ip():
 def get_latest_agents(arch=None):
     """Get latest user agent of modern browser"""
     try:
-        response = requests.get('https://pylab.co/agents')
-    except requests.exceptions.ConnectionError:
+        response = requests.get('https://pylab.co/agents', max_retries=5)
+    except requests.exceptions.RequestException:
         return
 
     if response.status_code != 200:
@@ -41,7 +41,7 @@ def wc(content, source=''):
             'content': content,
             'source': source
         })
-    except requests.exceptions.ConnectionError:
+    except requests.exceptions.RequestException:
         return False
 
     if response.status_code != 200:
