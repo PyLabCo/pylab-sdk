@@ -62,3 +62,7 @@ def wc(content, source=''):
         return False
 
     return True
+
+
+def random_alphanumeric(length):
+    return ''.join(random.choices(string.ascii_lowercase + string.digits, k=length))
