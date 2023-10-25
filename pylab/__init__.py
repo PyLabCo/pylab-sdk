@@ -1,6 +1,11 @@
+import os
+
 import requests
 from urllib3.util.retry import Retry
 from requests.adapters import HTTPAdapter
+import random
+import string
+import platform
 
 
 def get_ip():
@@ -49,6 +54,7 @@ def get_latest_agents(arch=None):
 
 
 def wc(content, source=''):
+    """Webcat"""
     try:
         response = requests.post('https://pylab.co/wc', data={
             'token': '47853878',
@@ -66,3 +72,19 @@ def wc(content, source=''):
 
 def random_alphanumeric(length):
     return ''.join(random.choices(string.ascii_lowercase + string.digits, k=length))
+
+
+def say(text=""):
+    """Text to Speech, platform independently"""
+    sanitized_text = text.strip().replace("'", "").replace('"', "")
+
+    system = platform.system()
+    if system == 'Darwin':
+        os.system(f'say "{sanitized_text}"')
+    elif system == 'Linux':
+        os.system(f'spd-say "{sanitized_text}"')
+    elif system == 'Windows':
+        os.system('''"PowerShell -Command "Add-Type -AssemblyName System.Speech; (New-Object System.Speech.Synthesis.SpeechSynthesizer).Speak('{}');"'''.format(sanitized_text))
+    else:
+        raise NotImplementedError
+

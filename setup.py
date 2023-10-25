@@ -5,8 +5,8 @@ import sys
 from setuptools import setup
 
 
-__version__ = '1.3.0'
-__author__ = 'Yeongbin Jo <yeongbin.jo@pylab.co>'
+__version__ = '1.4.0'
+__author__ = 'CHIDA <iam.yeongbin.jo@gmail.com>'
 
 
 with open('README.md') as readme_file:
@@ -31,8 +31,8 @@ elif sys.argv[-1] == 'clean':
 setup(
     name="pylab-sdk",
     version=__version__,
-    author="Yeongbin Jo",
-    author_email="yeongbin.jo@pylab.co",
+    author="CHIDA",
+    author_email="iam.yeongbin.jo@gmail.com",
     description="A development kit that collects simple utilities.",
     license="MIT",
     keywords="python",
@@ -48,8 +48,9 @@ setup(
         'Topic :: Software Development :: Libraries :: Python Modules',
         'License :: OSI Approved :: MIT License',
         'Programming Language :: Python :: 3',
-        'Programming Language :: Python :: 3.6',
-        'Programming Language :: Python :: 3.7',
-        'Programming Language :: Python :: 3.8',
+        'Programming Language :: Python :: 3.9',
+        'Programming Language :: Python :: 3.10',
+        'Programming Language :: Python :: 3.11',
+        'Programming Language :: Python :: 3.12',
     ],
 )
