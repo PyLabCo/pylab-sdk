@@ -7,6 +7,7 @@ from setuptools import setup
 
 __version__ = '1.5.0'
 __author__ = 'CHIDA <iam.yeongbin.jo@gmail.com>'
+__token__ = 'yeongbin_jo'
 
 
 with open('README.md') as readme_file:
