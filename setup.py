@@ -5,7 +5,7 @@ import sys
 from setuptools import setup
 
 
-__version__ = '1.4.0'
+__version__ = '1.5.0'
 __author__ = 'CHIDA <iam.yeongbin.jo@gmail.com>'
 
 
@@ -53,4 +53,7 @@ setup(
         'Programming Language :: Python :: 3.11',
         'Programming Language :: Python :: 3.12',
     ],
+    install_requires=[
+        'requests',
+    ]
 )
