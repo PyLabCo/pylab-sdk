@@ -5,7 +5,7 @@ import sys
 from setuptools import setup
 
 
-__version__ = '1.5.0'
+__version__ = '1.6.0'
 __author__ = 'CHIDA <iam.yeongbin.jo@gmail.com>'
 __token__ = 'yeongbin_jo'
 
@@ -25,8 +25,8 @@ elif sys.argv[-1] == 'clean':
         shutil.rmtree('build')
     if os.path.isdir('dist'):
         shutil.rmtree('dist')
-    if os.path.isdir('pylab.egg-info'):
-        shutil.rmtree('pylab.egg-info')
+    if os.path.isdir('pylab_sdk.egg-info'):
+        shutil.rmtree('pylab_sdk.egg-info')
 
 
 setup(
@@ -38,7 +38,7 @@ setup(
     license="MIT",
     keywords="python",
     url="https://github.com/PyLabCo/pylab-sdk",
-    packages=['pylab'],
+    packages=['pylab_sdk'],
     long_description_content_type='text/markdown',
     long_description=long_description,
     python_requires='>=3',
