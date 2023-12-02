@@ -8,35 +8,40 @@ import string
 import platform
 
 
-def get_ip():
+_PYLAB_API_ENDPOINT = "https://api.pylab.co"
+_PYLAB_AUTH_KEY = os.environ.get("PYLAB_AUTH_KEY", "")
+
+
+def auth(key: str) -> None:
+    global _PYLAB_AUTH_KEY
+    _PYLAB_AUTH_KEY = key
+
+
+def get_ip() -> str:
     """Get public ip from http header"""
     s = requests.Session()
-    retries = Retry(total=5,
-                    backoff_factor=0.1,
-                    status_forcelist=[ 500, 502, 503, 504 ])
-    s.mount('http://', HTTPAdapter(max_retries=retries))
-    s.mount('https://', HTTPAdapter(max_retries=retries))
+    retries = Retry(total=5, backoff_factor=0.1, status_forcelist=[500, 502, 503, 504])
+    s.mount("http://", HTTPAdapter(max_retries=retries))
+    s.mount("https://", HTTPAdapter(max_retries=retries))
     try:
-        response = s.get('https://pylab.co/ip')
+        response = s.get(f"{_PYLAB_API_ENDPOINT}/ip")
     except requests.exceptions.RequestException:
-        return ''
+        return ""
 
     if response.status_code != 200:
-        return ''
+        return ""
 
     return response.text
 
 
-def get_latest_agents(arch=None):
+def get_latest_agents(arch=None) -> str | dict | None:
     """Get latest user agent of modern browser"""
     s = requests.Session()
-    retries = Retry(total=5,
-                    backoff_factor=0.1,
-                    status_forcelist=[ 500, 502, 503, 504 ])
-    s.mount('http://', HTTPAdapter(max_retries=retries))
-    s.mount('https://', HTTPAdapter(max_retries=retries))
+    retries = Retry(total=5, backoff_factor=0.1, status_forcelist=[500, 502, 503, 504])
+    s.mount("http://", HTTPAdapter(max_retries=retries))
+    s.mount("https://", HTTPAdapter(max_retries=retries))
     try:
-        response = s.get('https://pylab.co/agents')
+        response = s.get(f"{_PYLAB_API_ENDPOINT}/agents")
     except requests.exceptions.RequestException:
         return
 
@@ -53,14 +58,20 @@ def get_latest_agents(arch=None):
         return data
 
 
-def wc(content, source=''):
+CONTENT_TYPE_TEXT = "00"
+CONTENT_TYPE_CODE = "01"
+CONTENT_TYPE_IMAGE = "02"
+CONTENT_TYPE_FILE = "03"
+
+
+def wc(content: str, content_type: str = CONTENT_TYPE_TEXT, source: str = "") -> bool:
     """Webcat"""
     try:
-        response = requests.post('https://pylab.co/wc', data={
-            'token': '47853878',
-            'content': content,
-            'source': source
-        })
+        response = requests.post(
+            f"{_PYLAB_API_ENDPOINT}/wc",
+            data={"content": content, "content_type": content_type, "source": source},
+            headers={"Authorization": f"Bearer {_PYLAB_AUTH_KEY}"},
+        )
     except requests.exceptions.RequestException:
         return False
 
@@ -70,21 +81,27 @@ def wc(content, source=''):
     return True
 
 
-def random_alphanumeric(length):
-    return ''.join(random.choices(string.ascii_lowercase + string.digits, k=length))
+webcat = wc
 
 
-def say(text=""):
+def random_alphanumeric(length) -> str:
+    return "".join(random.choices(string.ascii_lowercase + string.digits, k=length))
+
+
+def say(text="") -> None:
     """Text to Speech, platform independently"""
     sanitized_text = text.strip().replace("'", "").replace('"', "")
 
     system = platform.system()
-    if system == 'Darwin':
+    if system == "Darwin":
         os.system(f'say "{sanitized_text}"')
-    elif system == 'Linux':
+    elif system == "Linux":
         os.system(f'spd-say "{sanitized_text}"')
-    elif system == 'Windows':
-        os.system('''"PowerShell -Command "Add-Type -AssemblyName System.Speech; (New-Object System.Speech.Synthesis.SpeechSynthesizer).Speak('{}');"'''.format(sanitized_text))
+    elif system == "Windows":
+        os.system(
+            '''"PowerShell -Command "Add-Type -AssemblyName System.Speech; (New-Object System.Speech.Synthesis.SpeechSynthesizer).Speak('{}');"'''.format(
+                sanitized_text
+            )
+        )
     else:
         raise NotImplementedError
-

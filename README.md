@@ -9,17 +9,17 @@ pip install pylab-sdk
 
 ## Example
 ```
-import pylab
+import pylab_sdk
 
 
 # Get your public IP
-ip = pylab.get_ip()
+ip = pylab_sdk.get_ip()
 
 # Get latest user agent of modern browser
-agents = pylab.get_latest_agents()
-assert agents['macOS'] == pylab.get_latest_agents('macOS')
+agents = pylab_sdk.get_latest_agents()
+assert agents['macOS'] == pylab_sdk.get_latest_agents('macOS')
 
 # Similar to netcat, webcat running over the http protocol helps you keep a log that you can check anywhere.
-pylab.wc('hello world', source='discord-bot')
+pylab_sdk.wc('hello world', source='discord-bot')
 
 ```
