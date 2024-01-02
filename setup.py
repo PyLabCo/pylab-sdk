@@ -5,7 +5,7 @@ import sys
 from setuptools import setup
 
 
-__version__ = "1.7.0"
+__version__ = "1.7.1"
 __author__ = "CHIDA <iam.yeongbin.jo@gmail.com>"
 __token__ = "yeongbin_jo"
 

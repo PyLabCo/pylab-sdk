@@ -1,0 +1,20 @@
+[tool.poetry]
+name = "pylab-sdk"
+version = "0.1.0"
+description = ""
+authors = ["CHIDA <iam.yeongbin.jo@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+requests = "^2.31.0"
+
+
+[tool.poetry.group.dev.dependencies]
+twine = "^4.0.2"
+wheel = "^0.42.0"
+setuptools = "^69.0.3"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

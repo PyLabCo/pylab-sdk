@@ -17,21 +17,21 @@ def auth(key: str) -> None:
     _PYLAB_AUTH_KEY = key
 
 
-def get_ip() -> str:
+def get_ip() -> str | None:
     """Get public ip from http header"""
     s = requests.Session()
     retries = Retry(total=5, backoff_factor=0.1, status_forcelist=[500, 502, 503, 504])
     s.mount("http://", HTTPAdapter(max_retries=retries))
     s.mount("https://", HTTPAdapter(max_retries=retries))
     try:
-        response = s.get(f"{_PYLAB_API_ENDPOINT}/ip")
+        response = s.get(f"{_PYLAB_API_ENDPOINT}/ip.json")
     except requests.exceptions.RequestException:
-        return ""
+        return None
 
     if response.status_code != 200:
-        return ""
+        return None
 
-    return response.text
+    return response.json()
 
 
 def get_latest_agents(arch=None) -> str | dict | None:
